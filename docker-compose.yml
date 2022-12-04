@@ -9,8 +9,8 @@ services:
     container_name: mysql
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: db
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
       - '127.0.0.1:33060:3306'
     volumes:
