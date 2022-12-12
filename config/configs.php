@@ -8,7 +8,3 @@ return [
         'password' => getenv('DB_PASSWORD') ?? ''
     ]
 ];
-
-if(!session_id()){
-    session_start();
-}
