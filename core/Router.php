@@ -4,38 +4,39 @@ declare(strict_types=1);
 
 namespace Core;
 
-class Router
+abstract class Router
 {
     private static array $routes;
 
     public static function add(string $route, array $action): void
     {
-        static::$routes[$route] = $action;
+        self::$routes[$route] = $action;
     }
 
     public static function dispatch(string $uri): void
     {
         $uri = strip_tags(trim($uri, '/'));
-        $uriParameters = parse_url($uri)['query'] ?? '';
-        $uri = parse_url($uri)['path'];
 
-        if (!static::validateUri($uri)) {
+        $uriParameters = parse_url($uri)['query'] ?? '';
+        $uri = parse_url($uri)['path'] ?? '';
+
+        if (!self::validateUri($uri)) {
             exit('Page not found');
         }
 
-        $method = static::$routes[$uri]['method'] ?? '';
+        $method = self::$routes[$uri]['method'] ?? '';
 
         if ($_SERVER['REQUEST_METHOD'] !== $method) {
             exit('Method not allowed');
         }
 
-        $controller = static::$routes[$uri]['controller'] ?? '';
+        $controller = self::$routes[$uri]['controller'] ?? '';
 
         if (!class_exists($controller)) {
             exit('Controller not found');
         }
 
-        $action = static::$routes[$uri]['action'] ?? '';
+        $action = self::$routes[$uri]['action'] ?? '';
 
         if (!method_exists($controller, $action)) {
             exit('Action not found');
@@ -44,8 +45,14 @@ class Router
         $reflector = new \ReflectionMethod($controller, $action);
         $actionArguments = $reflector->getParameters();
 
-        if($actionArguments === [] && $controller->before($action)){
-            $reflector->invoke(new $controller());
+        if(empty($actionArguments)){
+            $controller = new $controller();
+
+            if (!$controller->before($action)) {
+                exit('Pre-requisites are not met');
+            }
+
+            $controller->$action();
             $controller->after($action);
             exit();
         }
@@ -54,7 +61,11 @@ class Router
             exit('Parameters are required');
         }
 
-        $uriParameters = static::parseUriParameters($uriParameters);
+        if(!self::parseUriParameters($uriParameters)){
+            exit('Invalid URL parameters');
+        }
+
+        $uriParameters = self::parseUriParameters($uriParameters);
         $parameters = [];
 
         foreach ($actionArguments as $actionArgument) {
@@ -64,17 +75,23 @@ class Router
                 exit('Required argument "' . $argumentName . '" is missing');
             }
 
-            if(!static::isPassable($uriParameters[$argumentName], $actionArgument)){
+            if(!self::isPassable($uriParameters[$argumentName], $actionArgument)){
                 exit($argumentName . ' is not passable parameter');
             }
 
             $parameters[$argumentName] = $uriParameters[$argumentName];
         }
 
-        if($controller->beafore($action)) {
-            $reflector->invokeArgs(new $controller(), $parameters);
-            $controller->after($action);
+        $controller = new $controller();
+
+        if(!$controller->before($action)) {
+            exit('Pre-requisites are not met');
         }
+
+        call_user_func_array([$controller, $action], $parameters);
+        $controller->after($action);
+
+        dd(self::$routes);
     }
 
     private static function isPassable(string $value, \ReflectionParameter $parameter): bool
@@ -86,24 +103,27 @@ class Router
             $parameterType === 'string' => is_string($value),
             default => false
         };
-
-        return true;
     }
 
     private static function validateUri(string $uri): bool
     {
-        return key_exists($uri, static::$routes);
+        return key_exists($uri, self::$routes);
     }
 
-    private static function parseUriParameters(string $unparsedParameters): array
+    private static function parseUriParameters(string $unparsedParameters): array|false
     {
         $unparsedParameters = explode('&', $unparsedParameters);
 
         $parsedParameters = [];
 
         foreach ($unparsedParameters as $parameter) {
-            $key = explode('=', $parameter)[0];
-            $value = explode('=', $parameter)[1];
+            $key = explode('=', $parameter)[0] ?? '';
+            $value = explode('=', $parameter)[1] ?? '';
+
+            if(!$key || !$value){
+                return false;
+            }
+
             $parsedParameters[$key] = $value;
         }
 
