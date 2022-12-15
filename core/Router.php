@@ -24,48 +24,44 @@ abstract class Router
             exit('Page not found');
         }
 
-        $method = self::$routes[$uri]['method'] ?? '';
-
-        if ($_SERVER['REQUEST_METHOD'] !== $method) {
-            exit('Method not allowed');
+        if(!self::validateRouteAction($uri)){
+            exit('Invalid route action');
         }
 
-        $controller = self::$routes[$uri]['controller'] ?? '';
-
-        if (!class_exists($controller)) {
-            exit('Controller not found');
-        }
-
-        $action = self::$routes[$uri]['action'] ?? '';
-
-        if (!method_exists($controller, $action)) {
-            exit('Action not found');
-        }
-
+        $controller = self::$routes[$uri]['controller'];
+        $action = self::$routes[$uri]['action'];
         $reflector = new \ReflectionMethod($controller, $action);
         $actionArguments = $reflector->getParameters();
 
         if(empty($actionArguments)){
-            $controller = new $controller();
-
-            if (!$controller->before($action)) {
-                exit('Pre-requisites are not met');
-            }
-
-            $controller->$action();
-            $controller->after($action);
-            exit();
+           self::callRouteAction($controller, $action);
+           exit();
         }
 
-        if(!$uriParameters){
-            exit('Parameters are required');
-        }
-
-        if(!self::parseUriParameters($uriParameters)){
+        if(!$uriParameters || !self::parseUriParameters($uriParameters)){
             exit('Invalid URL parameters');
         }
 
         $uriParameters = self::parseUriParameters($uriParameters);
+        $parameters = self::getParameters($uriParameters, $actionArguments);
+
+        self::callRouteActionArgs($controller, $action, $parameters);
+    }
+
+    private static function callRouteActionArgs(string $controller, string $action, array $parameters): void
+    {
+        $controller = new $controller();
+
+        if(!$controller->before($action)) {
+            exit('Pre-requisites are not met');
+        }
+
+        call_user_func_array([$controller, $action], $parameters);
+        $controller->after($action);
+    }
+
+    private static function getParameters(array $uriParameters, array $actionArguments): array
+    {
         $parameters = [];
 
         foreach ($actionArguments as $actionArgument) {
@@ -82,16 +78,42 @@ abstract class Router
             $parameters[$argumentName] = $uriParameters[$argumentName];
         }
 
+        return $parameters;
+    }
+
+    private static function callRouteAction(string $controller, string $action):void
+    {
         $controller = new $controller();
 
-        if(!$controller->before($action)) {
+        if (!$controller->before($action)) {
             exit('Pre-requisites are not met');
         }
 
-        call_user_func_array([$controller, $action], $parameters);
+        $controller->$action();
         $controller->after($action);
+    }
 
-        dd(self::$routes);
+    private static function validateRouteAction(string $uri) : bool
+    {
+        $method = self::$routes[$uri]['method'] ?? '';
+
+        if ($_SERVER['REQUEST_METHOD'] !== $method) {
+            return false;
+        }
+
+        $controller = self::$routes[$uri]['controller'] ?? '';
+
+        if (!class_exists($controller)) {
+            return false;
+        }
+
+        $action = self::$routes[$uri]['action'] ?? '';
+
+        if (!method_exists($controller, $action)) {
+            return false;
+        }
+
+        return true;
     }
 
     private static function isPassable(string $value, \ReflectionParameter $parameter): bool
