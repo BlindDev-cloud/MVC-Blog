@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Core;
 
-class Controller
+abstract class Controller
 {
     public function before(string $action): bool
     {
