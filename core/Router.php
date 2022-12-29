@@ -24,7 +24,7 @@ abstract class Router
             exit('Page not found');
         }
 
-        if(!self::validateRouteAction($uri)){
+        if (!self::validateRouteAction($uri)) {
             exit('Invalid route action');
         }
 
@@ -33,12 +33,12 @@ abstract class Router
         $reflector = new \ReflectionMethod($controller, $action);
         $actionArguments = $reflector->getParameters();
 
-        if(empty($actionArguments)){
-           self::callRouteAction($controller, $action);
-           exit();
+        if (empty($actionArguments)) {
+            self::callRouteAction($controller, $action);
+            exit();
         }
 
-        if(!$uriParameters || !self::parseUriParameters($uriParameters)){
+        if (!$uriParameters || !self::parseUriParameters($uriParameters)) {
             exit('Invalid URL parameters');
         }
 
@@ -52,7 +52,7 @@ abstract class Router
     {
         $controller = new $controller();
 
-        if(!$controller->before($action)) {
+        if (!$controller->before($action)) {
             exit('Pre-requisites are not met');
         }
 
@@ -71,7 +71,7 @@ abstract class Router
                 exit('Required argument "' . $argumentName . '" is missing');
             }
 
-            if(!self::isPassable($uriParameters[$argumentName], $actionArgument)){
+            if (!self::isPassable($uriParameters[$argumentName], $actionArgument)) {
                 exit($argumentName . ' is not passable parameter');
             }
 
@@ -81,7 +81,7 @@ abstract class Router
         return $parameters;
     }
 
-    private static function callRouteAction(string $controller, string $action):void
+    private static function callRouteAction(string $controller, string $action): void
     {
         $controller = new $controller();
 
@@ -93,7 +93,7 @@ abstract class Router
         $controller->after($action);
     }
 
-    private static function validateRouteAction(string $uri) : bool
+    private static function validateRouteAction(string $uri): bool
     {
         $method = self::$routes[$uri]['method'] ?? '';
 
@@ -120,7 +120,7 @@ abstract class Router
     {
         $parameterType = $parameter->getType()->getName();
 
-        return match(true){
+        return match (true) {
             $parameterType === 'int' => ctype_digit($value),
             $parameterType === 'string' => is_string($value),
             default => false
@@ -142,7 +142,7 @@ abstract class Router
             $key = explode('=', $parameter)[0] ?? '';
             $value = explode('=', $parameter)[1] ?? '';
 
-            if(!$key || !$value){
+            if (!$key || !$value) {
                 return false;
             }
 
