@@ -21,6 +21,55 @@ trait Queryable
         $this->where = [];
     }
 
+    public function update(array $data): object
+    {
+        if($this->type !== ''){
+            exit('UPDATE can`t be used here');
+        }
+
+        if(!isset($this->id)){
+            return $this;
+        }
+
+        $query = 'UPDATE ' . static::$table . ' SET ' . static::buildPlaceholders($data) . ' WHERE id=:id';
+        $statement = Connection::connect()->prepare($query);
+
+        $statement->execute([
+            'id' => $this->id,
+            ...$data
+        ]);
+
+        return static::find($this->id);
+    }
+
+    public static function delete(int $id): bool
+    {
+        $query = 'DELETE FROM ' . static::$table . ' WHERE id=:id';
+        $statement = Connection::connect()->prepare($query);
+
+        return $statement->execute(compact('id'));
+    }
+
+    public function destroy(): object|bool
+    {
+        if(!isset($this->id)){
+            return $this;
+        }
+
+        return static::delete($this->id);
+    }
+
+    protected static function buildPlaceholders(array $data): string
+    {
+        $placeholders = [];
+
+        foreach ($data as $key => $value){
+            $placeholders[] = $key . '=:' . $key;
+        }
+
+        return implode(', ', $placeholders);
+    }
+
     public static function select(array $columns = ['*']): static
     {
         $model = new static();
@@ -43,7 +92,7 @@ trait Queryable
 
     public function where(string $field, mixed $value, string $condition = '='): static
     {
-        if (!in_array($this->type, ['select', 'update', 'delete', 'where'])) {
+        if (!in_array($this->type, ['select', 'where'])) {
             exit('WHERE can not be used in this query');
         }
 
