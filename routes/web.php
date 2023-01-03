@@ -2,7 +2,7 @@
 
 use Core\Router;
 
-//Router::add('', ['controller' => 'Core\Controller', 'action' => 'index', 'method' => 'GET']);
+//Router::add('', ['controller' => 'App\Controllers\TestController', 'action' => 'index', 'method' => 'GET']);
 
 
 

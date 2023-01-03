@@ -14,8 +14,10 @@ try {
 
     require_once BASE_DIR . '/routes/web.php';
 
-//    \Core\Router::dispatch($_SERVER['REQUEST_URI']);
-    
+    if (!preg_match('/assets/i', $_SERVER['REQUEST_URI'])) {
+//        \Core\Router::dispatch($_SERVER['REQUEST_URI']);
+    }
+
 }catch (Exception $exception){
 
 }

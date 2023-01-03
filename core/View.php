@@ -10,7 +10,7 @@ class View
     {
         extract($args, flags: EXTR_SKIP);
 
-        $file = VIEW_DIR . $view . '.php';
+        $file = VIEW_DIR . '/' . $view . '.php';
 
         if (!is_readable($file)) {
             exit('File ' . $file . ' not found');
