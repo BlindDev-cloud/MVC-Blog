@@ -10,4 +10,4 @@
 </head>
 <body class="text-light" style="background-color: #002030;">
 <div class="container">
-    <?php require_once VIEW_DIR . '/nav.php' ?>
+    <?php require_once VIEW_DIR . '/nav.php'; ?>

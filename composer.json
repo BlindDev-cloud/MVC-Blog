@@ -6,7 +6,7 @@
             "Core\\": "core/"
         },
         "files": [
-            "Config/functions.php"
+            "config/functions.php"
         ]
     },
     "require": {

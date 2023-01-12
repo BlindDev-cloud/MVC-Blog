@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use JetBrains\PhpStorm\NoReturn;
+
 function url(string $link = ''): string
 {
     return SITE_URL . '/' . $link;
 }
 
-function redirect(string $path = ''): void
+#[NoReturn] function redirect(string $path = ''): void
 {
     header('Location: ' . url($path));
     exit();
