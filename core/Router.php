@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Core;
 
+use App\Helpers\SessionHelper;
+
 abstract class Router
 {
     private static array $routes;
@@ -53,7 +55,7 @@ abstract class Router
         $controller = new $controller();
 
         if (!$controller->before($action)) {
-            exit('Pre-requisites are not met');
+            redirectBack();
         }
 
         call_user_func_array([$controller, $action], $parameters);
@@ -86,7 +88,7 @@ abstract class Router
         $controller = new $controller();
 
         if (!$controller->before($action)) {
-            exit('Pre-requisites are not met');
+            redirectBack();
         }
 
         $controller->$action();

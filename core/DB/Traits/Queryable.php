@@ -135,7 +135,7 @@ trait Queryable
         ];
     }
 
-    public static function find(int $id): object
+    public static function find(int $id): false|static
     {
         $query = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
 
@@ -146,10 +146,10 @@ trait Queryable
         return $statement->fetchObject(static::class);
     }
 
-    public static function findBy(string $field, string $value): object
+    public static function findBy(string $field, string $value): false|static
     {
         $query = 'SELECT * FROM ' . static::$table
-            . ' WHERE ' . $field . '=:' . $value;
+            . ' WHERE ' . $field . '=:' . $field;
 
         $statement = Connection::connect()->prepare($query);
 

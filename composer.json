@@ -4,7 +4,10 @@
             "App\\": "app/",
             "Config\\": "config/",
             "Core\\": "core/"
-        }
+        },
+        "files": [
+            "config/functions.php"
+        ]
     },
     "require": {
         "larapack/dd": "^1.1",
