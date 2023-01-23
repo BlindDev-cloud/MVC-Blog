@@ -16,8 +16,6 @@
             <ul class="navbar-nav">
                 <?php if (App\Helpers\SessionHelper::isAdmin() && isAdminRoute()): ?>
                     <?php require_once VIEW_DIR . '/navs/admin.php'; ?>
-                <?php else: ?>
-                    <?php require_once VIEW_DIR . '/navs/site.php'; ?>
                 <?php endif; ?>
             </ul>
             <ul class="navbar-nav">
@@ -33,7 +31,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="<?= url('logout') ?>">Logout</a>
+                           href="<?= url('logout'); ?>">Logout</a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">

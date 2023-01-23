@@ -25,6 +25,7 @@ services:
       dockerfile: docker/php-fpm/Dockerfile
     volumes:
       - .:/var/www/html
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
     extra_hosts:
       - host.docker.internal:host-gateway
     networks:

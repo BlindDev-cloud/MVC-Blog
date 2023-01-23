@@ -21,25 +21,18 @@ trait Queryable
         $this->where = [];
     }
 
-    public function update(array $data): object
+    public static function update(array $data): bool
     {
-        if($this->type !== ''){
-            exit('UPDATE can`t be used here');
-        }
-
-        if(!isset($this->id)){
-            return $this;
+        if(!isset($data['id'])){
+            return false;
         }
 
         $query = 'UPDATE ' . static::$table . ' SET ' . static::buildPlaceholders($data) . ' WHERE id=:id';
         $statement = Connection::connect()->prepare($query);
 
-        $statement->execute([
-            'id' => $this->id,
-            ...$data
-        ]);
+        $statement->execute($data);
 
-        return static::find($this->id);
+        return true;
     }
 
     public static function delete(int $id): bool
@@ -135,7 +128,7 @@ trait Queryable
         ];
     }
 
-    public static function find(int $id): false|static
+    public static function find(int $id): false|object
     {
         $query = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
 
@@ -146,7 +139,7 @@ trait Queryable
         return $statement->fetchObject(static::class);
     }
 
-    public static function findBy(string $field, string $value): false|static
+    public static function findBy(string $field, string $value): false|object
     {
         $query = 'SELECT * FROM ' . static::$table
             . ' WHERE ' . $field . '=:' . $field;

@@ -17,4 +17,14 @@ class BaseValidator
             }
         }
     }
+
+    public function addErrors(array $error): void
+    {
+        $this->errors += $error;
+    }
+
+    public function addRules(array $rule): void
+    {
+        $this->rules += $rule;
+    }
 }

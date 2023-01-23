@@ -8,8 +8,24 @@ use App\Models\User;
 
 class UserBaseValidator extends BaseValidator
 {
-    public function userAlreadyExists(string $email): bool|User
+    protected array $errors = [
+        'email' => [
+            'type' => 'danger',
+            'message' => 'Invalid email'
+        ],
+        'password' => [
+            'type' => 'danger',
+            'message' => 'Password must be at least 8 characters'
+        ]
+    ];
+
+    protected array $rules = [
+        'email' => '/^[a-zA-Z0-9.!#$%&\'*+\/\?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i',
+        'password' => '/[a-zA-Z0-9.!#$%&\'*+\/\?^_`{|}~-]{8,}/'
+    ];
+
+    public function userExists(string $email): bool
     {
-        return User::findBy('email', $email);
+        return (bool)User::findBy('email', $email);
     }
 }

@@ -1,5 +1,9 @@
 <?php Core\View::render('layout/header'); ?>
 
+<?php
+$data = \App\Helpers\SessionHelper::get('data');
+?>
+
     <div class="container">
         <div class="row">
             <div class="col-12 d-flex align-items-center justify-content-center">
@@ -19,7 +23,7 @@
                                        name="name"
                                        class="form-control"
                                        id="name"
-                                       value="<?= !empty($data['name']) ? $data['name'] : '' ?>"
+                                       value="<?= $data['name'] ?? ''; ?>"
                                 >
                             </div>
 
@@ -31,7 +35,7 @@
                                        name="surname"
                                        class="form-control"
                                        id="surname"
-                                       value="<?= !empty($data['surname']) ? $data['surname'] : '' ?>"
+                                       value="<?= $data['surname'] ?? ''; ?>"
                                 >
                             </div>
 
@@ -44,7 +48,7 @@
                                        class="form-control"
                                        id="exampleInputEmail1"
                                        aria-describedby="emailHelp"
-                                       value="<?= !empty($data['email']) ? $data['email'] : '' ?>"
+                                       value="<?= $data['email'] ?? ''; ?>"
                                 >
                             </div>
                             <div class="mb-3">
@@ -55,7 +59,9 @@
                                        class="form-control"
                                        id="exampleInputPassword1">
                             </div>
-                            <?php \Core\View::render('auth/alerts'); ?>
+
+                            <?php \Core\View::render('alerts'); ?>
+
                             <button type="submit"
                                     class="btn btn-primary">
                                 Create

@@ -1,46 +1,57 @@
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle"
-       href="#"
-       id="navbarDropdown"
-       role="button"
-       data-bs-toggle="dropdown"
-       aria-expanded="true">
-        Posts
-    </a>
-    <ul class="dropdown-menu"
-        aria-labelledby="navbarDropdown">
-        <li>
-            <a class="dropdown-item"
-               href="<?= url('admin/posts') ?>">All
-                Posts</a>
-        </li>
-        <li>
-            <a class="dropdown-item"
-               href="<?= url('admin/posts/create') ?>">New
-                Post</a>
-        </li>
-    </ul>
-</li>
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle"
-       href="#"
-       id="navbarDropdown"
-       role="button"
-       data-bs-toggle="dropdown"
-       aria-expanded="true">
+<div class="dropdown">
+    <button class="btn dropdown-toggle text-light"
+            style="background-color: #002030;"
+            type="button"
+            id="dropdownMenuButtonCategories"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="true">
         Categories
-    </a>
+    </button>
     <ul class="dropdown-menu"
-        aria-labelledby="navbarDropdown">
+        aria-labelledby="dropdownMenuButtonCategories">
         <li>
             <a class="dropdown-item"
-               href="<?= url('admin/categories') ?>">All
-                Categories</a>
+               href="<?= url('admin/categories'); ?>">
+                All Categories
+            </a>
         </li>
         <li>
             <a class="dropdown-item"
-               href="<?= url('admin/categories/create') ?>">New
-                Category</a>
+               href="<?= url('admin/categories/create'); ?>">
+                New
+                Category
+            </a>
         </li>
     </ul>
-</li>
+</div>
+
+<div class="dropdown">
+    <button class="btn dropdown-toggle text-light"
+            style="background-color: #002030;"
+            type="button"
+            id="dropdownMenuButtonPosts"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="true">
+        Posts
+    </button>
+    <ul class="dropdown-menu"
+        aria-labelledby="dropdownMenuButtonPosts">
+        <li>
+            <a class="dropdown-item"
+               href="<?= url('admin/posts'); ?>">
+                All
+                Posts
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item"
+               href="<?= url('admin/posts/create'); ?>">
+                New
+                Post
+            </a>
+        </li>
+    </ul>
+</div>
+

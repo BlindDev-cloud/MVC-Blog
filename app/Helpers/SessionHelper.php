@@ -13,7 +13,7 @@ class SessionHelper
 
     public static function id(): int|null
     {
-        return $_SESSION['user_data']['id'] ?? null;
+        return !empty($_SESSION['user_data']['id']) ? $_SESSION['user_data']['id'] : null;
     }
 
     public static function setUserData(int $id, mixed ...$args): void
@@ -32,16 +32,21 @@ class SessionHelper
         ];
     }
 
-    public static function getAlerts(): array
+    public static function setFormData(array $data): void
     {
-        $alerts = $_SESSION['alerts'] ?? [];
-        self::flushAlerts();
-        return $alerts;
+        $_SESSION['data'] = $data;
     }
 
-    private static function flushAlerts(): void
+    public static function get(string $key): array
     {
-        $_SESSION['alerts'] = [];
+        $sessionData = !empty($_SESSION[$key]) ? $_SESSION[$key] : [];
+        self::flush($key);
+        return $sessionData;
+    }
+
+    private static function flush(string $key): void
+    {
+        $_SESSION[$key] = [];
     }
 
     public static function hasAlerts(): bool
@@ -51,7 +56,7 @@ class SessionHelper
 
     public static function isAdmin(): bool
     {
-        return $_SESSION['user_data']['is_admin'] ?? false;
+        return !empty($_SESSION['user_data']['is_admin']);
     }
 
     public static function destroy(): void

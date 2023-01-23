@@ -1,4 +1,9 @@
 <?php Core\View::render('layout/header'); ?>
+
+<?php
+$data = \App\Helpers\SessionHelper::get('data');
+?>
+
     <div class="container">
         <div class="row">
             <div class="col-12 d-flex align-items-center justify-content-center">
@@ -18,11 +23,18 @@
                                        class="form-control"
                                        id="exampleInputEmail1"
                                        aria-describedby="emailHelp"
-                                       value="<?= $_SESSION['auth']['login']['email'] ?? '' ?>"
+                                       value="<?= $data['email'] ?? ''; ?>"
                                 >
                                 <div id="emailHelp"
                                      class="form-text">
-                                    We'll never share your email with anyone else.
+                                    We'll
+                                    never
+                                    share
+                                    your
+                                    email
+                                    with
+                                    anyone
+                                    else.
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -33,13 +45,15 @@
                                        class="form-control"
                                        id="exampleInputPassword1">
                             </div>
-                            <?php \Core\View::render('auth/alerts'); ?>
+                            <?php \Core\View::render('alerts'); ?>
                             <button type="submit"
                                     class="btn btn-primary">
                                 Submit
                             </button>
                             <a href="<?= url('registration') ?>">
-                                Create an account
+                                Create
+                                an
+                                account
                             </a>
                         </form>
                     </div>

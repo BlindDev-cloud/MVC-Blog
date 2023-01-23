@@ -12,20 +12,25 @@ use Core\View;
 
 class UserController extends Controller
 {
-    public function store()
+    public function store(): void
     {
         $fields = filter_input_array(INPUT_POST, $_POST, true);
         $validator = new CreateUserValidator();
 
         $validator->validate($fields);
 
-        if ($validator->userAlreadyExists($fields['email'])) {
+        if(SessionHelper::hasAlerts()){
+            SessionHelper::setFormData($fields);
+            redirectBack();
+        }
+
+        if ($validator->userExists($fields['email'])) {
             SessionHelper::setAlert('email', 'warning', 'User already exists');
         }
 
         if (SessionHelper::hasAlerts()) {
-            View::render('auth/registration', ['data' => $fields]);
-            exit();
+            SessionHelper::setFormData($fields);
+            redirectBack();
         }
 
         $fields['password'] = password_hash($fields['password'], PASSWORD_BCRYPT);

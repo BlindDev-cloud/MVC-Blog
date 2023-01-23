@@ -1,5 +1,5 @@
 <?php
-$alerts = App\Helpers\SessionHelper::getAlerts();
+$alerts = App\Helpers\SessionHelper::get('alerts');
 $alerts = array_unique($alerts, SORT_REGULAR);
 ?>
 <div class="row my-3">
