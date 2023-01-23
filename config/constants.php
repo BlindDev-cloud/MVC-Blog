@@ -8,3 +8,5 @@ const IMG_URL = ASSET_URL . '/img';
 const APP_DIR = BASE_DIR . '/app';
 const VIEW_DIR = APP_DIR . '/Views';
 const STORAGE_DIR = BASE_DIR . '/public/assets/storage';
+const STORAGE_URL = ASSET_URL . '/storage';
+

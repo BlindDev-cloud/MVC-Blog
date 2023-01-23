@@ -6,7 +6,7 @@
 
             <?php if(!empty($category)): ?>
             <div class="card w-75 mt-5">
-                <img class="card-img-top" src="<?= IMG_URL . '/' . $category->image; ?>" alt="">
+                <img class="card-img-top" src="<?= STORAGE_URL . '/' . $category->image; ?>" alt="">
                 <div class="card-body">
                     <h2 class="card-title"><?= $category->title; ?></h2>
                     <p class="card-text h4"><?= $category->description; ?></p>
