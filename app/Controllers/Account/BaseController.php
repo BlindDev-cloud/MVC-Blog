@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers\Admin;
+namespace App\Controllers\Account;
 
 use App\Helpers\SessionHelper;
 use Core\Controller;
@@ -15,6 +15,6 @@ class BaseController extends Controller
     {
         $this->fields = filter_input_array(INPUT_POST, $_POST, true);
 
-        return SessionHelper::isAdmin();
+        return SessionHelper::isLoggedIn();
     }
 }

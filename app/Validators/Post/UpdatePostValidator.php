@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Validators;
+namespace App\Validators\Post;
 
-use App\Models\Category;
+use App\Models\Post;
 
-class UpdateCategoryValidator extends CreateCategoryValidator
+class UpdatePostValidator extends CreatePostValidator
 {
     public function __construct()
     {
@@ -20,10 +20,5 @@ class UpdateCategoryValidator extends CreateCategoryValidator
         $this->addRules([
             'id' => '/^\d{1,}$/'
         ]);
-    }
-
-    public function categoryExists(int $id): bool
-    {
-        return (bool)Category::find($id);
     }
 }

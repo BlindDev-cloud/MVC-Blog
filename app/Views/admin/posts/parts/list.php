@@ -5,7 +5,11 @@
             ID
         </th>
         <th scope="col">
-            Name
+            Title
+        </th>
+        <th scope="col">
+            Created
+            at
         </th>
         <th scope="col">
             Actions
@@ -13,31 +17,25 @@
     </tr>
     </thead>
     <tbody>
-    <?php if (!empty($categories)): ?>
-        <?php foreach ($categories as $category): ?>
+    <?php if (!empty($posts)): ?>
+        <?php foreach ($posts as $post): ?>
             <tr>
-                <th scope="row">
-                    <?= $category->id; ?>
-                </th>
+                <th scope="row"><?= $post->id ?></th>
+                <td><?= $post->title ?></td>
+                <td><?= $post->created_at ?></td>
                 <td>
-                    <a href="<?= url('admin/posts/by_category?id=' . $category->id . '&title=' . $category->title); ?>"
-                    class="link-light bg-dark">
-                        <?= $category->title; ?>
-                    </a>
-                </td>
-                <td>
-                    <a href="<?= url('admin/categories/show?id=' . $category->id); ?>"
+                    <a href="<?= url('admin/posts/show?id=' . $post->id); ?>"
                        class="btn btn-primary">Show</a>
-                    <a href="<?= url('admin/categories/edit?id=' . $category->id); ?>"
+                    <a href="<?= url('admin/posts/edit?id=' . $post->id); ?>"
                        class="btn btn-secondary">Edit</a>
                     <div class="d-inline-flex ml-5">
-                        <form action="<?= url('admin/categories/remove'); ?>"
+                        <form action="<?= url('admin/posts/remove'); ?>"
                               method="POST">
                             <input type="hidden"
                                    name="id"
                                    id="id"
                                    class="form-control"
-                                   value="<?= $category->id ?>">
+                                   value="<?= $post->id ?>">
                             <button type="submit"
                                     class="btn btn-danger">
                                 Remove

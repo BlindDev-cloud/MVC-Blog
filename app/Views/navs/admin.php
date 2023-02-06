@@ -1,3 +1,7 @@
+<?php
+$category = \App\Helpers\SessionHelper::get('category');
+?>
+
 <div class="dropdown">
     <button class="btn dropdown-toggle text-light"
             style="background-color: #002030;"
@@ -6,7 +10,7 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="true">
-        Categories
+        <?= $category['title'] ?? 'Categories' ?>
     </button>
     <ul class="dropdown-menu"
         aria-labelledby="dropdownMenuButtonCategories">

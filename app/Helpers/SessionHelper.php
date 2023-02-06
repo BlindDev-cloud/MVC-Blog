@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use App\Models\Post;
+
 class SessionHelper
 {
     public static function isLoggedIn(): bool
@@ -64,5 +66,14 @@ class SessionHelper
         if (session_id()) {
             session_destroy();
         }
+    }
+
+    public static function isAuthor(int $postAuthorId): bool
+    {
+        if($postAuthorId !== self::id()){
+            return false;
+        }
+
+        return true;
     }
 }

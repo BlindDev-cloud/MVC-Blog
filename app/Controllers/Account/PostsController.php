@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers\Admin;
+namespace App\Controllers\Account;
 
 use App\Helpers\SessionHelper;
 use App\Models\Category;
@@ -16,16 +16,18 @@ class PostsController extends BaseController
 {
     public function index(): void
     {
-        $posts = Post::all()
+        $id = SessionHelper::id();
+        $posts = Post::innerJoin('users', 'author_id')
+            ->where('author_id', $id)
             ->orderBy('created_at', 'DESC')
             ->get();
-        View::render('admin/posts/index', compact('posts'));
+        View::render('account/posts/index', compact('posts'));
     }
 
     public function create(): void
     {
         $categories = Category::all()->get();
-        View::render('admin/posts/create', compact('categories'));
+        View::render('account/posts/create', compact('categories'));
     }
 
     public function selectPostCategory(int $id, string $title): void
@@ -37,50 +39,52 @@ class PostsController extends BaseController
         redirectBack();
     }
 
-    public function byCategory(int $id, string $title): void
-    {
-        $_SESSION['category'] = [
-            'title' => $title
-        ];
-
-        $posts = Post::innerJoin('categories', 'category_id', ['*'])
-            ->where('category_id', $id)
-            ->orderBy('created_at', 'DESC')
-            ->get();
-
-        View::render('admin/posts/index', compact('posts'));
-    }
-
     public function store(): void
     {
         CreatePostService::call($this->fields);
 
-        redirect('admin/posts');
+        redirect('account/posts');
     }
 
     public function show(int $id): void
     {
-        $post = (Post::find($id)) ? Post::find($id) : null;
-        View::render('admin/posts/show', compact('post'));
+        $post = Post::find($id);
+
+        if(!$post){
+            redirect('account/posts');
+        }
+
+        $postCategory = Category::find($post->category_id)->title;
+        View::render('account/posts/show', compact('post', 'postCategory'));
     }
 
     public function edit(int $id): void
     {
         $post = Post::find($id);
-        View::render('admin/posts/edit', compact('post'));
+        View::render('account/posts/edit', compact('post', 'categories'));
     }
 
     public function update(): void
     {
         UpdatePostService::call($this->fields);
 
-        redirect('admin/posts');
+        redirect('account/posts');
     }
 
     public function remove(): void
     {
         RemovePostService::call($this->fields);
 
-        redirectBack();
+        redirect('account/posts');
+    }
+
+    public function byCategory(int $id): void
+    {
+        $posts = Post::innerJoin('categories', 'category_id', ['*'])
+            ->where('category_id', $id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        View::render('account/posts/index', compact('posts'));
     }
 }

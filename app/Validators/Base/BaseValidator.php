@@ -3,6 +3,7 @@
 namespace App\Validators\Base;
 
 use App\Helpers\SessionHelper;
+use Core\Model;
 
 class BaseValidator
 {
@@ -18,13 +19,13 @@ class BaseValidator
         }
     }
 
-    public function addErrors(array $error): void
+    public function addErrors(array $errors): void
     {
-        $this->errors += $error;
+        $this->errors += $errors;
     }
 
-    public function addRules(array $rule): void
+    public function addRules(array $rules): void
     {
-        $this->rules += $rule;
+        $this->rules += $rules;
     }
 }

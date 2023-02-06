@@ -26,3 +26,8 @@ function isAdminRoute(): bool
 {
     return in_array('admin', explode('/', $_SERVER['REQUEST_URI']));
 }
+
+function isAccountRoute(): bool
+{
+    return in_array('account', explode('/', $_SERVER['REQUEST_URI']));
+}

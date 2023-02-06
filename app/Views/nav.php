@@ -17,6 +17,10 @@
                 <?php if (App\Helpers\SessionHelper::isAdmin() && isAdminRoute()): ?>
                     <?php require_once VIEW_DIR . '/navs/admin.php'; ?>
                 <?php endif; ?>
+
+                <?php if (App\Helpers\SessionHelper::isLoggedIn() && isAccountRoute()): ?>
+                    <?php require_once VIEW_DIR . '/navs/account.php'; ?>
+                <?php endif; ?>
             </ul>
             <ul class="navbar-nav">
                 <?php if (App\Helpers\SessionHelper::isLoggedIn()): ?>

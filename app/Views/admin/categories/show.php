@@ -1,20 +1,27 @@
 <?php Core\View::render('layout/header'); ?>
 
-<div class="container" style="color: #000000;">
-    <div class="row justify-content-center">
-        <div class="col col-10 d-flex align-items-center justify-content-center">
-
-            <?php if(!empty($category)): ?>
-            <div class="card w-75 mt-5">
-                <img class="card-img-top" src="<?= STORAGE_URL . '/' . $category->image; ?>" alt="">
-                <div class="card-body">
-                    <h2 class="card-title"><?= $category->title; ?></h2>
-                    <p class="card-text h4"><?= $category->description; ?></p>
-                    <a href="<?= url('admin/categories'); ?>" class="btn btn-lg btn-primary mt-2">Back</a>
+<div class="container"
+     style="color: #000000;">
+    <div class="row d-flex justify-content-center">
+        <div class="col col-10 text-center">
+            <?php if (!empty($category)): ?>
+                <div class="card w-100">
+                    <h5 class="card-title">
+                        <?= $category->title ?>
+                    </h5>
+                    <img class="card-img-top"
+                         src="<?= STORAGE_URL . '/' . $category->image ?>"
+                         alt="">
+                    <div class="card-body">
+                        <p>
+                            <?= $category->description ?>
+                        </p>
+                    </div>
                 </div>
-            </div>
             <?php else: ?>
-                 <h1>Not found</h1>
+                <h1>
+                    Not
+                    found</h1>
             <?php endif; ?>
         </div>
     </div>

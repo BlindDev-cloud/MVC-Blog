@@ -8,7 +8,7 @@ use App\Helpers\SessionHelper;
 use App\Models\User;
 use App\Validators\AuthValidator;
 
-class AuthSecrvice
+class AuthService
 {
     public static function call(array $fields): void
     {

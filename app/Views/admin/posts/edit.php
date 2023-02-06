@@ -1,23 +1,22 @@
 <?php Core\View::render('layout/header', ['admin' => true]); ?>
-
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-8 d-flex align-items-center justify-content-center">
-            <?php if (!empty($category)): ?>
+
+            <?php if (!empty($post)): ?>
                 <div class="card w-75 mt-5 bg-dark">
                     <h5 class="card-header">
                         Edit
-                        "<?= $category->title ?>"
-                        category
+                        post
                     </h5>
                     <div class="card-body">
-                        <form action="<?= url('admin/categories/update'); ?>"
+                        <form action="<?= url('admin/posts/update'); ?>"
                               method="POST"
                               enctype="multipart/form-data">
                             <input type="hidden"
                                    name="id"
                                    class="form-control"
-                                   value="<?= $category->id ?>">
+                                   value="<?= $post->id ?>">
                             <div class="mb-3">
                                 <label for="title"
                                        class="form-label">Title</label>
@@ -25,29 +24,30 @@
                                        name="title"
                                        class="form-control"
                                        id="title"
-                                       placeholder="Category name"
-                                       value="<?= $category->title ?>">
+                                       placeholder="Title"
+                                       value="<?= $post->title ?>">
                             </div>
                             <div class="mb-3">
-                                <label for="description"
-                                       class="form-label">Description</label>
+                                <label for="content"
+                                       class="form-label">Content</label>
                                 <textarea
                                         class="form-control"
-                                        name="description"
-                                        id="description"
-                                        rows="5"
-                                        placeholder="Description"><?=
-                                    $category->description
+                                        name="content"
+                                        id="content"
+                                        cols="30"
+                                        rows="10"
+                                        placeholder="Content"><?=
+                                    $post->content
                                     ?></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="image"
-                                       class="form-label">Image
+                                <label for="thumbnail"
+                                       class="form-label">Thumbnail
                                     (optional)</label>
                                 <input type="file"
-                                       name="image"
+                                       name="thumbnail"
                                        class="form-control"
-                                       id="image">
+                                       id="thumbnail">
                             </div>
 
                             <?php \Core\View::render('alerts'); ?>
@@ -67,5 +67,4 @@
         </div>
     </div>
 </div>
-
-<?php Core\View::render('layout/footer'); ?>
+<?php Core\View::render('layout/footer', ['admin' => true]); ?>

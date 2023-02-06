@@ -8,7 +8,6 @@ use App\Helpers\SessionHelper;
 use App\Models\User;
 use App\Validators\CreateUserValidator;
 use Core\Controller;
-use Core\View;
 
 class UserController extends Controller
 {
@@ -26,9 +25,6 @@ class UserController extends Controller
 
         if ($validator->userExists($fields['email'])) {
             SessionHelper::setAlert('email', 'warning', 'User already exists');
-        }
-
-        if (SessionHelper::hasAlerts()) {
             SessionHelper::setFormData($fields);
             redirectBack();
         }

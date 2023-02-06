@@ -23,5 +23,24 @@ Router::add('admin/categories/remove', ['controller' => 'App\Controllers\Admin\C
 
 Router::add('admin/posts', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'index', 'method' => 'GET']);
 Router::add('admin/posts/create', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'create', 'method' => 'GET']);
+Router::add('admin/posts/store', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'store', 'method' => 'POST']);
+Router::add('admin/posts/selectPostCategory', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'selectPostCategory', 'method' => 'GET']);
+Router::add('admin/posts/by_category', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'byCategory', 'method' => 'GET']);
+Router::add('admin/posts/show', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'show', 'method' => 'GET']);
+Router::add('admin/posts/edit', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'edit', 'method' => 'GET']);
+Router::add('admin/posts/update', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'update', 'method' => 'POST']);
+Router::add('admin/posts/remove', ['controller' => 'App\Controllers\Admin\PostsController', 'action' => 'remove', 'method' => 'POST']);
 
+Router::add('account/dashboard', ['controller' => 'App\Controllers\Account\DashboardController', 'action' => 'index', 'method' => 'GET']);
 
+Router::add('account/posts', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'index', 'method' => 'GET']);
+Router::add('account/posts/create', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'create', 'method' => 'GET']);
+Router::add('account/posts/selectPostCategory', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'selectPostCategory', 'method' => 'GET']);
+Router::add('account/posts/store', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'store', 'method' => 'POST']);
+Router::add('account/posts/show', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'show', 'method' => 'GET']);
+Router::add('account/posts/edit', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'edit', 'method' => 'GET']);
+Router::add('account/posts/update', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'update', 'method' => 'POST']);
+Router::add('account/posts/remove', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'remove', 'method' => 'POST']);
+Router::add('account/posts/by_category', ['controller' => 'App\Controllers\Account\PostsController', 'action' => 'byCategory', 'method' => 'GET']);
+
+Router::add('account/categories', ['controller' => 'App\Controllers\Account\CategoriesController', 'action' => 'index', 'method' => 'GET']);
