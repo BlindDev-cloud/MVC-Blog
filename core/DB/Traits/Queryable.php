@@ -13,33 +13,28 @@ trait Queryable
     protected static string $query;
     protected string $type;
     protected array $where = [];
+    protected string $orderBy = '';
 
     protected function reset(): void
     {
         static::$query = '';
         $this->type = '';
         $this->where = [];
+        $this->orderBy = '';
     }
 
-    public function update(array $data): object
+    public static function update(array $data): bool
     {
-        if($this->type !== ''){
-            exit('UPDATE can`t be used here');
-        }
-
-        if(!isset($this->id)){
-            return $this;
+        if (!isset($data['id'])) {
+            return false;
         }
 
         $query = 'UPDATE ' . static::$table . ' SET ' . static::buildPlaceholders($data) . ' WHERE id=:id';
         $statement = Connection::connect()->prepare($query);
 
-        $statement->execute([
-            'id' => $this->id,
-            ...$data
-        ]);
+        $statement->execute($data);
 
-        return static::find($this->id);
+        return true;
     }
 
     public static function delete(int $id): bool
@@ -52,7 +47,7 @@ trait Queryable
 
     public function destroy(): object|bool
     {
-        if(!isset($this->id)){
+        if (!isset($this->id)) {
             return $this;
         }
 
@@ -63,7 +58,7 @@ trait Queryable
     {
         $placeholders = [];
 
-        foreach ($data as $key => $value){
+        foreach ($data as $key => $value) {
             $placeholders[] = $key . '=:' . $key;
         }
 
@@ -92,7 +87,7 @@ trait Queryable
 
     public function where(string $field, mixed $value, string $condition = '='): static
     {
-        if (!in_array($this->type, ['select', 'where'])) {
+        if (!in_array($this->type, ['select', 'where', 'join'])) {
             exit('WHERE can not be used in this query');
         }
 
@@ -105,6 +100,10 @@ trait Queryable
     {
         if (!empty($this->where)) {
             static::$query .= ' WHERE ' . implode(' AND ', $this->where);
+        }
+
+        if(!empty($this->orderBy)){
+            static::$query .= $this->orderBy;
         }
 
         return Connection::connect()->query(static::$query)->fetchAll(PDO::FETCH_CLASS, class: static::class);
@@ -135,7 +134,7 @@ trait Queryable
         ];
     }
 
-    public static function find(int $id): object
+    public static function find(int $id): false|object
     {
         $query = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
 
@@ -146,10 +145,10 @@ trait Queryable
         return $statement->fetchObject(static::class);
     }
 
-    public static function findBy(string $field, string $value): object
+    public static function findBy(string $field, string $value): false|object
     {
         $query = 'SELECT * FROM ' . static::$table
-            . ' WHERE ' . $field . '=:' . $value;
+            . ' WHERE ' . $field . '=:' . $field;
 
         $statement = Connection::connect()->prepare($query);
 
@@ -158,5 +157,37 @@ trait Queryable
         ]);
 
         return $statement->fetchObject(static::class);
+    }
+
+    public function orderBy(string $column, string $direction = 'ASC'): static
+    {
+        if (!in_array($this->type, ['select', 'where', 'join'])) {
+            exit('ORDER BY can not be used in this query');
+        }
+
+        $this->type = 'order';
+        $this->orderBy = ' ORDER BY ' . $column . ' ' . $direction;
+
+        return $this;
+    }
+
+    public static function innerJoin(string $matchTable, string $matchId, array $columns = ['*']): static
+    {
+        $model = new static();
+        $model->reset();
+
+        $selectedColumns = [];
+
+        foreach ($columns as $column) {
+            $selectedColumns[] = static::$table . '.' . $column;
+        }
+
+        static::$query = 'SELECT ' . implode(', ', $selectedColumns) . ' FROM ' . static::$table
+                            . ' INNER JOIN ' . $matchTable
+                            . ' ON ' . static::$table . '.' . $matchId . '=' . $matchTable . '.id';
+
+        $model->type = 'join';
+
+        return $model;
     }
 }

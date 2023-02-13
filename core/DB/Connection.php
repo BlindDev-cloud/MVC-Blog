@@ -17,16 +17,14 @@ class Connection
                 . 'dbname=' . Config::get('db.database') . ';'
                 . 'charset=utf8';
             $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ];
 
             static::$connection = new PDO(
                 $dsn,
                 Config::get('db.user'),
-                Config::get('db.password'),
-                $options
+                Config::get('db.password')
             );
 
             return static::$connection;
