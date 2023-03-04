@@ -8,6 +8,7 @@ use App\Helpers\SessionHelper;
 use App\Models\Post;
 use App\Validators\Post\CreatePostValidator;
 use App\Services\FileUploadService;
+use Core\BaseException;
 
 class CreatePostService
 {
@@ -37,7 +38,7 @@ class CreatePostService
         $fields['thumbnail'] = FileUploadService::upload($_FILES['thumbnail']);
 
         if (!Post::create($fields)) {
-            exit('Category has not been created');
+            throw new BaseException('Internal Server Error', 500);
         }
     }
 }

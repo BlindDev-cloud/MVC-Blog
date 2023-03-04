@@ -18,6 +18,9 @@ try {
         \Core\Router::dispatch($_SERVER['REQUEST_URI']);
     }
 
-}catch (Exception $exception){
-
+}catch (\Core\BaseException $exception){
+    \Core\View::render('errorPage', [
+        'message' => $exception->getMessage(),
+        'code' => $exception->getCode()
+    ]);
 }
