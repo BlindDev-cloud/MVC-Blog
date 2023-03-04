@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Helpers\SessionHelper;
 use App\Models\User;
 use App\Validators\CreateUserValidator;
+use Core\BaseException;
 use Core\Controller;
 
 class UserController extends Controller
@@ -32,7 +33,7 @@ class UserController extends Controller
         $fields['password'] = password_hash($fields['password'], PASSWORD_BCRYPT);
 
         if (!User::create($fields)) {
-            exit('User has not been created');
+            throw new BaseException('Internal Server Error', 500);
         }
 
         redirect('login');

@@ -23,11 +23,11 @@ abstract class Router
         $uri = parse_url($uri)['path'] ?? '';
 
         if (!self::validateUri($uri)) {
-            exit('Page not found');
+            throw new BaseException();
         }
 
         if (!self::validateRouteAction($uri)) {
-            exit('Invalid route action');
+            throw new BaseException();
         }
 
         $controller = self::$routes[$uri]['controller'];
@@ -41,7 +41,7 @@ abstract class Router
         }
 
         if (!$uriParameters || !self::parseUriParameters($uriParameters)) {
-            exit('Invalid URL parameters');
+            throw new BaseException();
         }
 
         $uriParameters = self::parseUriParameters($uriParameters);
@@ -70,11 +70,11 @@ abstract class Router
             $argumentName = $actionArgument->getName();
 
             if (!key_exists($argumentName, $uriParameters)) {
-                exit('Required argument "' . $argumentName . '" is missing');
+                throw new BaseException();
             }
 
             if (!self::isPassable($uriParameters[$argumentName], $actionArgument)) {
-                exit($argumentName . ' is not passable parameter');
+                throw new BaseException();
             }
 
             $parameters[$argumentName] = $uriParameters[$argumentName];

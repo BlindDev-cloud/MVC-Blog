@@ -8,6 +8,7 @@ use App\Helpers\SessionHelper;
 use App\Models\Category;
 use App\Services\FileUploadService;
 use App\Validators\Category\CreateCategoryValidator;
+use Core\BaseException;
 
 class CreateCategoryService
 {
@@ -25,7 +26,7 @@ class CreateCategoryService
         $fields['image'] = FileUploadService::upload($_FILES['image']);
 
         if (!Category::create($fields)) {
-            exit('Category has not been created');
+            throw new BaseException('Internal Server Error', 500);
         }
     }
 }
