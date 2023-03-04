@@ -22,8 +22,8 @@ class CreateUserValidator extends UserBaseValidator
         ]);
 
         $this->addRules([
-            'name' => '/[A-Za-zА-Яа-я]{2,50}/',
-            'surname' => '/[A-Za-zА-Яа-я]{2,50}/',
+            'name' => '/[\w\s\t\r\n^\p{L}._\-\?,\!]{2,50}/',
+            'surname' => '/[\w\s\t\r\n^\p{L}._\-\?,\!]{2,50}/',
         ]);
     }
 }

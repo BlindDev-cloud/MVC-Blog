@@ -20,7 +20,7 @@ class CreateCategoryValidator extends ImageValidator
         ]
     ];
     protected array $rules = [
-        'title' => '/[\w\s\t\r\n]{2,100}/',
-        'description' => '/[\w\s\t\r\n]{5,}/'
+        'title' => '/[\w\s\t\r\n^\p{L}._\-\?,\!]{2,100}/',
+        'description' => '/[\w\s\t\r\n^\p{L}._\-\?,\!]{5,}/'
     ];
 }

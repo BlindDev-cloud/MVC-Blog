@@ -34,8 +34,8 @@ class CreatePostValidator extends ImageValidator
     protected array $rules = [
         'author_id' => '/^\d{1,}$/',
         'category_id' => '/^\d{1,}$/',
-        'title' => '/[\w\s\t\r\n]{2,100}/',
-        'content' => '/[\w\s\t\r\n\.?!]{5,}/'
+        'title' => '/[\w\s\t\r\n^\p{L}._\-\?,\!]{2,100}/',
+        'content' => '/[\w\s\t\r\n^\p{L}._\-\?,\!]{5,}/'
     ];
 
     public function authorExists(int $id): bool
