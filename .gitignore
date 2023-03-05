@@ -1,1 +1,7 @@
 .idea/
+.vscode
+composer.lock
+vendor/
+docker/mysql
+.env
+public/assets/storage
