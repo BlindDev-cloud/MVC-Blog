@@ -26,8 +26,6 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
-    extra_hosts:
-      - host.docker.internal:host-gateway
     networks:
       - app-network
 
@@ -41,4 +39,3 @@ services:
       - ./public/assets:/home/assets/
     networks:
       - app-network
-
